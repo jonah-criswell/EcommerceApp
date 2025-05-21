@@ -1,0 +1,5 @@
+<%= form_with url: products_path, method: :get, local: true do |form| %>
+  <%= form.label :query, "Search Products:" %>
+  <%= form.text_field :query, value: params[:query] %>
+  <%= form.submit "Search" %>
+<% end %>
