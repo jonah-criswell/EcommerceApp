@@ -14,4 +14,3 @@ The config/db/seeds.rb is WIP but I am working on leveragering AI to automate wr
 The next actual feature I want to add is to integrate Stripe into the application and provide a proper "Add to cart" and "checkout" functions, where customers can then actually purchase the product(s)
 
 Lastly, I need to style the website using mostly likely tailwind CSS for a more user-friendly and modern interface. The app is mainly HMTL at the moment as I want to get core functionally done first.
->>>>>>> 9976336fd3d7d0f4ef9b565748ce6efc8922cf94
