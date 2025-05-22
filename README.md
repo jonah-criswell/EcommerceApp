@@ -1,29 +1,3 @@
-<<<<<<< HEAD
-# README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-=======
 # EcommerceApp
 An ecommerce web app built to familiarize myself with ruby/ruby on rails for my upcoming internship with Cru. Clone this repo into your preferred IDE with rails install, and in the root directory of the project files, run bin/rails server, and go to your internet brower and enter "localhost:3000"
 
@@ -33,7 +7,7 @@ The app also boasts an authentication system, to where only authenticated users 
 
 Additionally, there is a subscription option for out-of-stock products to where customers wanting to buy a product that is out-of-stock, can subscribe to that product and will get emailed when that product is back in stock.
 
-Highest priority features TODO:
+# TODO:
 
 The config/db/seeds.rb is WIP but I am working on leveragering AI to automate writing descriptions for products, and to tailor a focused search query to query the unsplash AI to fetch an image. This way I can simply run the seeds.rb file to automatically populate the database with products and all associated data
 
