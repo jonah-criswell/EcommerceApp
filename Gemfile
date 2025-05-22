@@ -43,9 +43,11 @@ gem "image_processing", "~> 1.2"
 #For database seeding
 gem "faker"
 
-gem 'dotenv-rails', groups: [:development, :test]
+gem 'dotenv-rails'
 
 gem 'unsplash'
+
+gem "ruby-openai"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

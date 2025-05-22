@@ -4,6 +4,11 @@ namespace :db do
     puts "Deleting all product descriptions..."
     ActionText::RichText.where(record_type: "Product").delete_all
 
+    puts "Deleting all product images..."
+    Product.find_each do |product|
+      product.featured_image.purge_later if product.featured_image.attached?
+    end
+
     puts "Deleting all subscribers..."
     Subscriber.delete_all
 
