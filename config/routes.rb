@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "carts/show"
   get "users/new"
   get "users/create"
   resource :session
@@ -18,6 +19,11 @@ Rails.application.routes.draw do
   end
   resource :unsubscribe, only: [ :show ]
   resources :users, only: [:new, :create]
+
+  resources :cart_items, only: [:create, :destroy]
+  resource :cart, only: [:show] do
+    delete 'clear', on: :member
+  end
 
   # Defines the root path route ("/")
   # root "posts#index"

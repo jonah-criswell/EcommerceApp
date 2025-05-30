@@ -26,9 +26,11 @@
     <div class="notice"><%= notice %></div>
     <nav>
       <%= link_to "Home", root_path %>
+      <%= link_to "Cart (#{session[:cart]&.sum { |item| item['quantity'] } || 0})", cart_path %>
       <%= button_to "Log out", session_path, method: :delete if authenticated? %>
       <%= link_to "Login", new_session_path unless authenticated? %>
       <%= link_to "Sign Up", new_user_path unless authenticated? %>
+      
     </nav>
     <main>
       <%= yield %>

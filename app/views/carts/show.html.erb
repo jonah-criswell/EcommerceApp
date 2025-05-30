@@ -1,0 +1,26 @@
+<h1>Your Cart</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @cart_items.each do |item| %>
+      <tr>
+        <td><%= item[:product].name %></td>
+        <td><%= item[:quantity] %></td>
+        <td><%= number_to_currency(item[:product].price * item[:quantity]) %></td>
+        <td>
+          <%= button_to "Remove", cart_item_path(item[:product].id), method: :delete, data: { confirm: "Remove this item?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= button_to "Checkout", "/checkout", method: :post %>
