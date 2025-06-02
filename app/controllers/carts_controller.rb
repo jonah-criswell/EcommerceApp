@@ -11,6 +11,8 @@ class CartsController < ApplicationController
         quantity: item["quantity"].to_i
       }
     end.compact  # remove any nils from skipped products
+
+    @total_price = @cart_items.sum { |item| item[:product].price * item[:quantity] }
   end
 
   def clear

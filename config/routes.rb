@@ -25,6 +25,8 @@ Rails.application.routes.draw do
     delete 'clear', on: :member
   end
 
+  post '/checkout', to: 'checkout#create', as: :checkout
+
   # Defines the root path route ("/")
   # root "posts#index"
   root "products#index"

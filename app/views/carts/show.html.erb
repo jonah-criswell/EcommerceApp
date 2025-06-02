@@ -23,4 +23,7 @@
   </tbody>
 </table>
 
-<%= button_to "Checkout", "/checkout", method: :post %>
+<% unless @cart_items.empty? %>  
+    <strong> Total: <%= number_to_currency(@total_price) %></strong>
+<% end %>
+<%= button_to "Checkout", checkout_path, method: :post, data: { turbo: false } %>
