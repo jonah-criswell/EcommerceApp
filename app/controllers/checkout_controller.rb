@@ -1,4 +1,5 @@
 class CheckoutController < ApplicationController
+  allow_unauthenticated_access only: [:create, :success]
   def create
     cart = session[:cart] || []
 
@@ -36,10 +37,15 @@ class CheckoutController < ApplicationController
       payment_intent_data: {
         description: "eCommerce Checkout",
       },
-      success_url: root_url + "?success=true",
+      success_url: checkout_success_url + "?success=true",
       cancel_url: root_url + "?cancel=true"
     )
-
     redirect_to session.url, allow_other_host: true
+  end
+  
+  def success
+    session[:cart] = []  # Clear the cart after successful checkout
+    flash[:notice] = "Thank you for your purchase!"
+    redirect_to root_path
   end
 end

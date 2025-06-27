@@ -14,15 +14,26 @@
 
     <%= render "inventory", product: @product %>
 
-    <% if authenticated? %>
+    <% if authenticated? && @user&.admin == true %>
       <%= link_to "Edit", edit_product_path(@product) %>
       <%= button_to "Delete", @product, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
     <% end %>
 
     <%= form_with url: cart_items_path, method: :post do |f| %>
       <%= hidden_field_tag :product_id, @product.id %>
-      <%= number_field_tag :quantity, 1, min: 1 %>
-      <%= submit_tag "Add to Cart" %>
+      <% if session[:cart].nil? %>
+        session[:cart] = []
+      <% end %>
+      <% cart_item = session[:cart].find { |item| item["product_id"] == @product.id } %>
+      <% current_quantity = cart_item ? cart_item["quantity"] : 0 %>
+      <% if @product.inventory_count - current_quantity == 0 %>
+        <% unless @product.inventory_count == 0 %>
+          <p class="error">No more of this product can be added to your cart due to limited inventory.</p>
+        <% end %>
+      <% else %>
+        <%= number_field_tag :quantity, 1, min: 1, max: @product.inventory_count - current_quantity %>
+        <%= submit_tag "Add to Cart" %>
+      <% end %>
     <% end %>
   </section>
 </section>
