@@ -18,6 +18,7 @@ class ProductsController < ApplicationController
 
   # Displays a single product (retrieved by `set_product`)
   def show
+    @user = User.find_by(id: session[:user_id])
   end
 
   # Initializes a new product instance for the form

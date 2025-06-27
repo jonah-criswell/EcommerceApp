@@ -1,4 +1,5 @@
 class CartItemsController < ApplicationController
+  allow_unauthenticated_access only: [:create, :destroy]
   def create
     product = Product.find(params[:product_id])
     quantity = params[:quantity].to_i

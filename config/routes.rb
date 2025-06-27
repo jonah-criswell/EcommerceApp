@@ -27,6 +27,8 @@ Rails.application.routes.draw do
 
   post '/checkout', to: 'checkout#create', as: :checkout
 
+  get '/checkout/success', to: 'checkout#success', as: :checkout_success
+
   # Defines the root path route ("/")
   # root "posts#index"
   root "products#index"

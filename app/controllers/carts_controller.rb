@@ -1,4 +1,5 @@
 class CartsController < ApplicationController
+  allow_unauthenticated_access only: [:show, :clear]
   def show
     session[:cart] ||= []
 
