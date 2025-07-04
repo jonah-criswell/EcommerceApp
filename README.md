@@ -10,7 +10,7 @@ A full-featured eCommerce web application built with **Ruby on Rails** as a hand
   Create, update, and delete products with fields including name, description, price, inventory count, and image uploads. Data is stored in a **SQLite** relational database.
 
 - **Authentication System**  
-  Only authenticated users can manage products. Create an account via the **Sign Up** link in the navbar to access these features.
+  Only administrative users can manage products. Log in using the email: admin@demo.com and password: admin223 to explore functionality in editing, creating, and deleting products. Create an account via the **Sign Up** link in the navbar to explore what a normal logged in user experiences.
 
 - **Product Search**  
   Use the search bar on the home page to filter through a growing list of products by name or description.
