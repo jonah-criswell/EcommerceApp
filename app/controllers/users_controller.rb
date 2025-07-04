@@ -10,7 +10,6 @@ class UsersController < ApplicationController
 
     if @user.save
       start_new_session_for @user
-      @user.update!(admin: false)
       redirect_to after_authentication_url, notice: "Account created successfully!"
     else
       render :new

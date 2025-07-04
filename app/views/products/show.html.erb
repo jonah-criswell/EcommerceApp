@@ -14,7 +14,7 @@
 
     <%= render "inventory", product: @product %>
 
-    <% if authenticated? && @user&.admin == true %>
+    <% if current_user&.admin? %>
       <%= link_to "Edit", edit_product_path(@product) %>
       <%= button_to "Delete", @product, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
     <% end %>
@@ -24,7 +24,7 @@
       <% if session[:cart].nil? %>
         session[:cart] = []
       <% end %>
-      <% cart_item = session[:cart].find { |item| item["product_id"] == @product.id } %>
+      <% cart_item = session[:cart]&.find { |item| item["product_id"] == @product.id } %>
       <% current_quantity = cart_item ? cart_item["quantity"] : 0 %>
       <% if @product.inventory_count - current_quantity == 0 %>
         <% unless @product.inventory_count == 0 %>
