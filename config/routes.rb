@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "home/index"
   get "carts/show"
   get "users/new"
   get "users/create"
@@ -31,5 +32,5 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  root "products#index"
+  root "home#index"
 end

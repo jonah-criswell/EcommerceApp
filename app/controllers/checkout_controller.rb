@@ -38,7 +38,7 @@ class CheckoutController < ApplicationController
         description: "eCommerce Checkout",
       },
       success_url: checkout_success_url + "?success=true",
-      cancel_url: root_url + "?cancel=true"
+      cancel_url: cart_url + "?cancel=true"
     )
     redirect_to session.url, allow_other_host: true
   end
