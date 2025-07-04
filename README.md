@@ -1,16 +1,85 @@
-# EcommerceApp
-An ecommerce web app built to familiarize myself with ruby/ruby on rails for my upcoming internship with Cru. Clone this repo into your preferred IDE with rails install, and in the root directory of the project files, run bin/rails server, and go to your internet brower and enter "localhost:3000"
+# 🛒 EcommerceApp
 
-The app currently supports basic CRUD operations using a SQLite relatoinal database to store products' names, descriptions, prices, images, and inventory counts. The home page is where you will find a list of all products, and a search bar which can be handy if the product list gets very long.
+A full-featured eCommerce web application built with **Ruby on Rails** as a hands-on learning project in preparation for my software engineering internship with [Cru](https://www.cru.org). The app includes real-world features like authentication, shopping cart functionality, product search, and Stripe integration.
 
-The app also boasts an authentication system, to where only authenticated users can add, edit, or remove products from the store. Simple click "sign up" in the top left corner to create an account to play around with these configurations. 
+---
 
-Additionally, there is a subscription option for out-of-stock products to where customers wanting to buy a product that is out-of-stock, can subscribe to that product and will get emailed when that product is back in stock.
+## 🚀 Features
 
-# TODO:
+- **CRUD Product Management**  
+  Create, update, and delete products with fields including name, description, price, inventory count, and image uploads. Data is stored in a **SQLite** relational database.
 
-The config/db/seeds.rb is WIP but I am working on leveragering AI to automate writing descriptions for products, and to tailor a focused search query to query the unsplash AI to fetch an image. This way I can simply run the seeds.rb file to automatically populate the database with products and all associated data
+- **Authentication System**  
+  Only authenticated users can manage products. Create an account via the **Sign Up** link in the navbar to access these features.
 
-The next actual feature I want to add is to integrate Stripe into the application and provide a proper "Add to cart" and "checkout" functions, where customers can then actually purchase the product(s)
+- **Product Search**  
+  Use the search bar on the home page to filter through a growing list of products by name or description.
 
-Lastly, I need to style the website using mostly likely tailwind CSS for a more user-friendly and modern interface. The app is mainly HMTL at the moment as I want to get core functionally done first.
+- **Out-of-Stock Subscriptions**  
+  Users can **subscribe to out-of-stock products** and receive an email notification when those items are back in stock.
+
+- **Shopping Cart & Stripe Checkout**  
+  Add products to a persistent cart and securely purchase them via **Stripe integration**, mimicking production-grade eCommerce flows.
+
+---
+
+## 🛠️ Getting Started
+
+To run the app locally:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/jonah-criswell/EcommerceApp.git
+   cd EcommerceApp
+   ```
+
+2. Install dependencies:
+   ```bash
+   bundle install
+   ```
+
+3. Start the server:
+   ```bash
+   bin/rails server
+   ```
+
+4. Visit the app in your browser:
+   ```
+   http://localhost:3000
+   ```
+
+> ⚠️ You must have Ruby and Rails installed on your system.
+
+---
+
+## 🔐 Admin Access (Coming Soon)
+
+I'm working on role-based access so only **admin users** can manage product listings. Once implemented, I'll include admin credentials here so you can explore full functionality.
+
+---
+
+## 📸 Screenshots (Coming Soon)
+
+Stay tuned! UI improvements and screenshots will be added after styling is complete.
+
+---
+
+## 🎯 Roadmap / TODOs
+
+- [ ] Style the app using **Bootstrap** for clean, responsive design
+- [ ] Restrict product management to **admin users** only
+- [ ] Add a contextual homepage with branding and feature highlights
+- [ ] Deploy to production (likely with **Render** or **Heroku**)
+- [ ] Explore AI-powered features:
+  - Generate product descriptions automatically
+  - Recommend products based on user history
+
+---
+
+## 📚 Motivation
+
+This project is a personal initiative to deepen my understanding of Ruby on Rails and gain experience with full-stack development before my internship. It replicates many features found in real-world eCommerce platforms, giving me hands-on experience with authentication, payments, and scalable app structure.
+
+---
+
+
