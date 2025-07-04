@@ -2,7 +2,9 @@
 
 <%= render "shared/search" %>
 
-<%= link_to "New product", new_product_path if authenticated? %>
+<% if current_user&.admin? %>
+  <%= link_to "New product", new_product_path if authenticated? %>
+<% end %>
 
 <div id="products">
   <% @products.each do |product| %>
