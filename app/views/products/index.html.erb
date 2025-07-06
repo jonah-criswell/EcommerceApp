@@ -1,15 +1,26 @@
-<h1>Products</h1>
+<h1>Our Catalog:</h1>
 
-<%= render "shared/search" %>
+<div class="d-flex align-items-center justify-content-center gap-2, mb-4">
+  <%= render "shared/search" %>
 
-<% if current_user&.admin? %>
-  <%= link_to "New product", new_product_path if authenticated? %>
-<% end %>
+  <% if current_user&.admin? && authenticated? %>
+    <%= link_to "New product", new_product_path, class: "btn btn-info" %>
+  <% end %>
+</div>
 
-<div id="products">
+<div id="products" class="row gx-3 gy-4" style="max-width: 1000px;">
   <% @products.each do |product| %>
-    <div>
-      <%= link_to product.name, product %>
+    <div class="col-md-4"> <!-- 3 columns on md+ screens -->
+      <div class="card" style="width: 18rem;">
+        <% if product.featured_image.attached? %>
+          <%= image_tag product.featured_image.variant(resize_to_fill: [400, 400]).processed,
+                        class: "card-img-top img-fluid", loading: "lazy" %>
+        <% end %>
+        <div class="card-body">
+          <h5 class="card-title"><%= product.name %></h5>
+          <%= link_to "View", product, class: "btn btn-normal w-100" %>
+        </div>
+      </div>
     </div>
   <% end %>
 </div>
