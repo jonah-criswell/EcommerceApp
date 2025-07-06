@@ -1,5 +1,6 @@
-<%= form_with url: products_path, method: :get, local: true do |form| %>
-  <%= form.label :query, "Search Products:" %>
-  <%= form.text_field :query, value: params[:query] %>
-  <%= form.submit "Search" %>
-<% end %>
+<div style="max-width: 600px; width: 100%;">
+  <%= form_with url: products_path, method: :get, local: true, class: "d-flex" do |form| %>
+    <%= form.text_field :query, value: params[:query], class: "form-control me-2", placeholder: "Search products...", style: "width: 100%;" %>
+    <%= form.submit "Search", class: "btn btn-info" %>
+  <% end %>
+</div>

@@ -37,3 +37,13 @@ section.product img {
   flex-basis: 50%;
   max-width: 50%;
 }
+
+.btn-normal {
+  background-color: #dfdfdf;  /* your custom color */
+  color: black;               /* text color */
+}
+
+.btn-normal:hover {
+  background-color: #e8e8e8;  /* darker shade on hover */
+  color: black;
+}
