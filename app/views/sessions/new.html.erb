@@ -1,11 +1,45 @@
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
-
-<%= form_with url: session_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-  <%= form.submit "Sign in" %>
+<% content_for :hide_navbar do %>
+  <style>nav {
+      display: none !important;
+  }</style>
 <% end %>
-<br>
 
-<%= link_to "Forgot password?", new_password_path %>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card p-4 shadow-sm mt-5">
+        <h2 class="text-center mb-4">Sign In</h2>
+
+        <%= form_with url: home_index_path, class: "mb-3" do |form| %>
+          <div class="mb-3">
+            <%= form.email_field :email_address,
+                                 required: true,
+                                 autofocus: true,
+                                 autocomplete: "username",
+                                 placeholder: "Enter your email address",
+                                 value: params[:email_address],
+                                 class: "form-control focus-success" %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.password_field :password,
+                                    required: true,
+                                    autocomplete: "current-password",
+                                    placeholder: "Enter your password",
+                                    maxlength: 72,
+                                    class: "form-control focus-success" %>
+          </div>
+
+          <%= form.submit "Sign in", class: "btn btn-success w-100" %>
+        <% end %>
+
+        <div class="text-center">
+          <%= link_to "Forgot password?", new_password_path, class: "text-muted" %>
+        </div>
+        <div class="text-center">
+          <%= link_to "Sign Up", new_user_path, class: "text-muted" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

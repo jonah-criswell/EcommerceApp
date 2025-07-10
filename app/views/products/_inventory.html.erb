@@ -1,8 +1,12 @@
 <% if product.inventory_count? %>
-  <p><%= product.inventory_count %> in stock</p>
+  <% if product.inventory_count < 10 %>
+    <p style="color: #e3a200;"><%= product.inventory_count %> in stock</p>
+  <% else %>
+    <p style="color: #2fd82f;"><%= product.inventory_count %> in stock</p>
+  <% end %>
 <% else %>
-  <p>Out of stock</p>
-  <p>Email me when available.</p>
+  <p style="color: #ff0000;">Out of stock</p>
+  <p>Email me when available:</p>
 
   <%= form_with model: [product, Subscriber.new] do |form| %>
     <%= form.email_field :email, placeholder: "you@example.com", required: true %>

@@ -1,41 +1,51 @@
 <p><%= link_to "< Back", products_path, class: "btn btn-normal" %></p>
 
 <section class="product">
-  <% if @product.featured_image.attached? %>
-    <%= image_tag @product.featured_image.variant(resize_to_limit: [400, 400]).processed, class: "img-fluid", width: 400, height: 400, loading: "lazy" %>
-  <% end %>
-
-  <section class="product-info">
-    <% cache @product do %>
-      
-      <h1><%= @product.name %></h1>
-      <h2><strong>Price:</strong> $<%= number_to_currency(@product.price, unit: "") %></h2>
-      <h2>description:</h2>
-      <%= @product.description %>
+  <div class="d-flex align-items-start gap-4">
+    <% if @product.featured_image.attached? %>
+      <%= image_tag @product.featured_image.variant(resize_to_limit: [400, 400]).processed, class: "img-fluid border", width: 400, height: 400, loading: "lazy" %>
+    <% else %>
+      <div class="border img-fluid d-flex justify-content-center align-items-center"
+           style="width: 400px; height: 400px; background-color: #f0f0f0; color: #888;">
+        <span>No image available</span>
+      </div>
     <% end %>
+    <section class="product-info flex-grow-1">
+      <% cache @product do %>
 
-    <%= render "inventory", product: @product %>
-
-    <% if current_user&.admin? %>
-      <%= link_to "Edit", edit_product_path(@product), class: "btn btn-normal" %>
-      <%= button_to "Delete", @product, method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
-    <% end %>
-
-    <%= form_with url: cart_items_path, method: :post do |f| %>
-      <%= hidden_field_tag :product_id, @product.id %>
-      <% if session[:cart].nil? %>
-        <% session[:cart] = [] %>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h1 class="display-5 mb-1"><%= @product.name %></h1>
+          <h1 class="display-5 mb-1">$<%= number_to_currency(@product.price, unit: "") %></h1>
+        </div>
+        <%= @product.description %>
       <% end %>
-      <% cart_item = session[:cart]&.find { |item| item["product_id"] == @product.id } %>
-      <% current_quantity = cart_item ? cart_item["quantity"] : 0 %>
-      <% if @product.inventory_count - current_quantity == 0 %>
-        <% unless @product.inventory_count == 0 %>
-          <p class="error">No more of this product can be added to your cart due to limited inventory.</p>
+
+      <%= render "inventory", product: @product, class: "mb-2" %>
+
+
+      <div class="d-flex gap-2 align-items-center">
+        <%= form_with url: cart_items_path, method: :post do |f| %>
+          <%= hidden_field_tag :product_id, @product.id %>
+          <% if session[:cart].nil? %>
+            <% session[:cart] = [] %>
+          <% end %>
+          <% cart_item = session[:cart]&.find { |item| item["product_id"] == @product.id } %>
+          <% current_quantity = cart_item ? cart_item["quantity"] : 0 %>
+
+            <% if @product.inventory_count - current_quantity == 0 %>
+              <% unless @product.inventory_count == 0 %>
+                <p class="error">No more of this product can be added to your cart due to limited inventory.</p>
+              <% end %>
+            <% else %>
+              <%= number_field_tag :quantity, 1, min: 1, max: @product.inventory_count - current_quantity %>
+              <%= submit_tag "Add to Cart", class: "btn btn-outline-success" %>
+            <% end %>
         <% end %>
-      <% else %>
-        <%= number_field_tag :quantity, 1, min: 1, max: @product.inventory_count - current_quantity %>
-        <%= submit_tag "Add to Cart", class: "btn btn-info" %>
-      <% end %>
-    <% end %>
-  </section>
+        <% if current_user&.admin? %>
+          <%= link_to "Edit", edit_product_path(@product), class: "btn btn-normal" %>
+          <%= button_to "Delete", @product, method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
+        <% end %>
+      </div>
+    </section>
+  </div>
 </section>
