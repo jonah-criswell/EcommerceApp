@@ -12,6 +12,7 @@ class CheckoutController < ApplicationController
             name: product.name,
           },
           unit_amount: (product.price * 100).to_i, # Stripe expects cents
+          tax_behavior: 'exclusive',
         },
         quantity: item["quantity"],
       }
@@ -34,6 +35,12 @@ class CheckoutController < ApplicationController
       payment_method_types: ['card'],
       line_items: line_items,
       mode: 'payment',
+      automatic_tax: {
+        enabled: true
+      },
+      shipping_address_collection: {
+        allowed_countries: ['US']
+      },
       payment_intent_data: {
         description: "eCommerce Checkout",
       },

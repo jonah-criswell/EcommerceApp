@@ -1,22 +1,58 @@
-<h1>Create Account</h1>
-
-<%= form_with model: @user, local: true do |form| %>
-  <div>
-    <%= form.label :email_address %><br>
-    <%= form.email_field :email_address %>
-  </div>
-
-  <div>
-    <%= form.label :password %><br>
-    <%= form.password_field :password %>
-  </div>
-
-  <div>
-    <%= form.label :password_confirmation %><br>
-    <%= form.password_field :password_confirmation %>
-  </div>
-
-  <div>
-    <%= form.submit "Sign Up" %>
-  </div>
+<% content_for :hide_navbar do %>
+  <style>nav {
+      display: none !important;
+  }</style>
 <% end %>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card p-4 shadow-sm mt-5">
+        <h2 class="text-center mb-4">Create Account</h2>
+
+        <% if flash[:alert] %>
+          <div class="alert alert-danger"><%= flash[:alert] %></div>
+        <% end %>
+
+        <% if flash[:notice] %>
+          <div class="alert alert-success"><%= flash[:notice] %></div>
+        <% end %>
+
+        <%= form_with model: @user, local: true, class: "mb-3" do |form| %>
+          <div class="mb-3">
+            <%= form.email_field :email_address,
+                                 required: true,
+                                 autofocus: true,
+                                 autocomplete: "username",
+                                 placeholder: "Enter your email address",
+                                 class: "form-control focus-success" %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.password_field :password,
+                                    required: true,
+                                    autocomplete: "new-password",
+                                    placeholder: "Enter your password",
+                                    maxlength: 72,
+                                    class: "form-control focus-success" %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.password_field :password_confirmation,
+                                    required: true,
+                                    autocomplete: "new-password",
+                                    placeholder: "Confirm your password",
+                                    maxlength: 72,
+                                    class: "form-control focus-success" %>
+          </div>
+
+          <%= form.submit "Sign up", class: "btn btn-success w-100" %>
+        <% end %>
+
+        <div class="text-center">
+          <%= link_to "Already have an account? Sign in", new_session_path, class: "text-muted" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

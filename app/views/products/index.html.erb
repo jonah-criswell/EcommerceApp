@@ -1,20 +1,25 @@
-<h1>Our Catalog:</h1>
+<div class="text-center mb-4">
+  <h1 class="display-2">Our Catalog:</h1>
+</div>
 
-<div class="d-flex align-items-center justify-content-center gap-2, mb-4">
-  <%= render "shared/search" %>
-
+<div class="d-flex align-items-center justify-content-center gap-2 mb-4">
   <% if current_user&.admin? && authenticated? %>
-    <%= link_to "New product", new_product_path, class: "btn btn-info" %>
+    <%= link_to "New product", new_product_path, class: "btn btn-outline-success" %>
   <% end %>
 </div>
 
-<div id="products" class="row gx-3 gy-4" style="max-width: 1000px;">
+<div id="products" class="row gx-3 gy-4 mx-auto" style="max-width: 1100px;">
   <% @products.each do |product| %>
     <div class="col-md-4"> <!-- 3 columns on md+ screens -->
-      <div class="card" style="width: 18rem;">
+      <div class="card" style="width: 21rem;">
         <% if product.featured_image.attached? %>
           <%= image_tag product.featured_image.variant(resize_to_fill: [400, 400]).processed,
                         class: "card-img-top img-fluid", loading: "lazy" %>
+        <% else %>
+          <div class="border img-fluid d-flex justify-content-center align-items-center"
+               style="width: 400px; height: 334px; background-color: #f0f0f0; color: #888;">
+            <span>No image available</span>
+          </div>
         <% end %>
         <div class="card-body">
           <h5 class="card-title"><%= product.name %></h5>

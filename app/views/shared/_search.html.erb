@@ -1,6 +1,6 @@
 <div style="max-width: 600px; width: 100%;">
   <%= form_with url: products_path, method: :get, local: true, class: "d-flex" do |form| %>
-    <%= form.text_field :query, value: params[:query], class: "form-control me-2", placeholder: "Search products...", style: "width: 100%;" %>
-    <%= form.submit "Search", class: "btn btn-info" %>
+    <%= form.text_field :query, value: params[:query], class: "form-control me-2 flex-grow-1", placeholder: "Search products..." %>
+    <%= form.submit "Search", class: "btn btn-outline-success" %>
   <% end %>
 </div>

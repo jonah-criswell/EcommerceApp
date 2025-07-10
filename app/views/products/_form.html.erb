@@ -1,28 +1,29 @@
-<%= form_with model: product do |form| %>
-  <div>
+<%= form_with model: product, data: { turbo: false } do |form| %>
+  <div class="p-1">
     <%= form.label :name %>
     <%= form.text_field :name %>
   </div>
-  <div>
+  <div class="p-1">
     <%= form.label :price %>
     <%= form.number_field :price, step: 0.01 %>
-
-  <div>
-    <%= form.label :featured_image, style: "display: block" %>
-    <%= form.file_field :featured_image, accept: "image/*" %>
   </div>
 
-  <div>
+  <div class="p-1">
+    <%= form.label :featured_image, style: "display: block" %>
+    <%= form.file_field :featured_image, accept: "image/*", class: "btn btn-outline-success" %>
+  </div>
+
+  <div class="p-1">
     <%= form.label :inventory_count, style: "display: block" %>
     <%= form.number_field :inventory_count %>
   </div>
-  
-  <div>
+
+  <div class="p-1">
     <%= form.label :description, style: "display: block" %>
     <%= form.rich_text_area :description %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="p-1">
+    <%= form.submit class: "btn btn-outline-success" %>
   </div>
 <% end %>

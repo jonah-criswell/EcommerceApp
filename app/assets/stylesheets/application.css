@@ -1,6 +1,14 @@
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  padding: 1rem;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 300;
+  color: #222;
+  line-height: 1.7;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300; /* Thin headings */
+  letter-spacing: 0.5px;
 }
 
 nav {
@@ -8,28 +16,23 @@ nav {
   display: flex;
   font-size: 0.875em;
   gap: 0.5rem;
-  max-width: 1024px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
 }
 
-nav a {
-  display: inline-block;
+/* Change navbar links */
+.navbar-nav .nav-link {
+  color: #000000;
 }
 
 main {
-  max-width: 1024px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .notice {
   color: green;
-}
-
-section.product {
-  display: flex;
-  gap: 1rem;
-  flex-direction: row;
 }
 
 section.product img {
@@ -39,11 +42,22 @@ section.product img {
 }
 
 .btn-normal {
-  background-color: #dfdfdf;  /* your custom color */
-  color: black;               /* text color */
+  background-color: transparent;       /* no fill */
+  color: black;                        /* text color */
+  border: 2px solid #dfdfdf;           /* border with your custom color */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.btn-normal:hover {
-  background-color: #e8e8e8;  /* darker shade on hover */
-  color: black;
+.btn-normal:hover,
+.btn-normal:focus {
+  background-color: #dfdfdf;           /* fill on hover */
+  color: black;                        /* text color stays */
+  text-decoration: none;
+}
+
+trix-editor {
+  min-height: 200px;
+  display: block;
+  border: 1px solid #ccc;
+  padding: 1rem;
 }

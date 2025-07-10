@@ -1,3 +1,6 @@
-<h1>Home</h1>
-<%= render 'shared/search' %>
-<%= link_to("Products", products_path) %>
+<div class="text-center mb-5">
+  <h1 class="display-1 mb-4">Welcome to Furnishly.</h1>
+  <p class="mb-5">Now that you've landed here, the shopping is over. Now is the easy part.</p>
+</div>
+
+<%= link_to("Browse our catalog", products_path, class: "btn btn-outline-success btn-lg d-block mx-auto mt-4") %>

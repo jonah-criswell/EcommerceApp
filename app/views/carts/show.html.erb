@@ -1,29 +1,35 @@
-<h1>Your Cart</h1>
+<h1 class="mb-5">Your Cart</h1>
 
-<table>
+<table class="table table-hover mb-4">
   <thead>
-    <tr>
-      <th>Product</th>
-      <th>Quantity</th>
-      <th>Price</th>
-      <th>Actions</th>
-    </tr>
+  <tr>
+    <th class="py-3">Product</th>
+    <th class="py-3">Quantity</th>
+    <th class="py-3">Price</th>
+    <th class="py-3">Actions</th>
+  </tr>
   </thead>
   <tbody>
-    <% @cart_items.each do |item| %>
-      <tr>
-        <td><%= item[:product].name %></td>
-        <td><%= item[:quantity] %></td>
-        <td><%= number_to_currency(item[:product].price * item[:quantity]) %></td>
-        <td>
-          <%= button_to "Remove", cart_item_path(item[:product].id), method: :delete, data: { confirm: "Remove this item?" } %>
-        </td>
-      </tr>
-    <% end %>
+  <% @cart_items.each do |item| %>
+    <tr>
+      <td class="py-4"><%= item[:product].name %></td>
+      <td class="py-4"><%= item[:quantity] %></td>
+      <td class="py-4"><%= number_to_currency(item[:product].price * item[:quantity]) %></td>
+      <td class="py-4">
+        <%= button_to "Remove", cart_item_path(item[:product].id), method: :delete, data: { confirm: "Remove this item?" }, class: "btn btn-outline-danger" %>
+      </td>
+    </tr>
+  <% end %>
   </tbody>
 </table>
 
-<% unless @cart_items.empty? %>  
-    <strong> Total: <%= number_to_currency(@total_price) %></strong>
+<% unless @cart_items.empty? %>
+  <div class="mb-4">
+    <strong class="h3">Total: <%= number_to_currency(@total_price) %></strong>
+  </div>
 <% end %>
-<%= button_to "Checkout", checkout_path, method: :post, data: { turbo: false } %>
+
+<div class="d-flex gap-3">
+  <%= button_to "Checkout", checkout_path, method: :post, data: { turbo: false }, class: "btn btn-outline-success btn-lg" %>
+  <%= link_to "Continue Shopping", products_path, data: { turbo: false }, class: "btn btn-success btn-lg" %>
+</div>
