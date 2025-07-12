@@ -21,20 +21,28 @@
     </div>
     <div class="col-md-6 text-md-end">
       <div class="d-flex gap-2 justify-content-md-end">
-        <select class="form-select form-select-sm" style="max-width: 150px;">
-          <option>Sort by</option>
-          <option>Price: Low to High</option>
-          <option>Price: High to Low</option>
-          <option>Name: A to Z</option>
-          <option>Name: Z to A</option>
-        </select>
-        <select class="form-select form-select-sm" style="max-width: 150px;">
-          <option>Category</option>
-          <option>Chairs</option>
-          <option>Tables</option>
-          <option>Storage</option>
-          <option>Decor</option>
-        </select>
+        <%= form_with url: products_path, method: :get, local: true do |form| %>
+          <div class="d-flex gap-2">
+            <select name="sort" class="form-select form-select-sm" style="max-width: 150px;" onchange="this.form.submit()">
+              <option value="">Sort by</option>
+              <option value="price_asc" <%= 'selected' if params[:sort] == 'price_asc' %>>Price: Low to High</option>
+              <option value="price_desc" <%= 'selected' if params[:sort] == 'price_desc' %>>Price: High to Low</option>
+              <option value="name_asc" <%= 'selected' if params[:sort] == 'name_asc' %>>Name: A to Z</option>
+              <option value="name_desc" <%= 'selected' if params[:sort] == 'name_desc' %>>Name: Z to A</option>
+            </select>
+            <select name="category" class="form-select form-select-sm" style="max-width: 150px;" onchange="this.form.submit()">
+              <option value="">All Categories</option>
+              <option value="seating" <%= 'selected' if params[:category] == 'seating' %>>Seating</option>
+              <option value="tables" <%= 'selected' if params[:category] == 'tables' %>>Tables</option>
+              <option value="storage" <%= 'selected' if params[:category] == 'storage' %>>Storage</option>
+              <option value="decor" <%= 'selected' if params[:category] == 'decor' %>>Decor</option>
+              <option value="other" <%= 'selected' if params[:category] == 'other' %>>Other</option>
+            </select>
+          </div>
+          <% if params[:query].present? %>
+            <%= form.hidden_field :query, value: params[:query] %>
+          <% end %>
+        <% end %>
       </div>
     </div>
   </div>

@@ -9,6 +9,21 @@
   </div>
 
   <div class="p-1">
+    <%= form.label :category, style: "display: block" %>
+    <%= form.select :category, 
+                    options_for_select([
+                      ['Select a category', ''],
+                      ['Seating', 'seating'],
+                      ['Tables', 'tables'],
+                      ['Storage', 'storage'],
+                      ['Decor', 'decor'],
+                      ['Other', 'other']
+                    ], product.category),
+                    {},
+                    { class: "form-select" } %>
+  </div>
+
+  <div class="p-1">
     <%= form.label :featured_image, style: "display: block" %>
     <%= form.file_field :featured_image, accept: "image/*", class: "btn btn-outline-success" %>
   </div>
