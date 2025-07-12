@@ -32,6 +32,21 @@ end
 
 products.each_with_index do |prod, index|
   price = rand(80..1200)
+  
+  # Determine category based on product name
+  category = case prod[:name]
+  when /Chair|Bench/
+    "seating"
+  when /Table|Desk/
+    "tables"
+  when /Bookshelf|Stand|Sideboard|Dresser|Rack|Shelf/
+    "storage"
+  when /Lamp|Mirror|Plant Stand/
+    "decor"
+  else
+    "other"
+  end
+  
   description = case prod[:name]
   when /Table/
     "A beautifully crafted table made from premium wood, perfect for contemporary spaces."
@@ -69,13 +84,14 @@ products.each_with_index do |prod, index|
     "A unique piece of contemporary wooden furniture."
   end
 
-  puts "\nCreating product #{index + 1}/#{products.length}: #{prod[:name]}"
+  puts "\nCreating product #{index + 1}/#{products.length}: #{prod[:name]} (#{category})"
   begin
     product = Product.create!(
       name: prod[:name],
       price: price,
       inventory_count: rand(5..30),
-      description: description
+      description: description,
+      category: category
     )
     puts "✓ Product created: #{product.name}"
   rescue => e

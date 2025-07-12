@@ -7,12 +7,27 @@ class ProductsController < ApplicationController
 
   # Displays a list of all products
   def index
+    @products = Product.all
+    
     if params[:query].present?
       # Search products whose name matches the query (case-insensitive)
-      @products = Product.where("LOWER(name) LIKE ?", "%#{params[:query].downcase}%")
-    else
-      # If no search query, show all products
-      @products = Product.all
+      @products = @products.where("LOWER(name) LIKE ?", "%#{params[:query].downcase}%")
+    end
+    
+    if params[:category].present? && params[:category] != "All Categories"
+      # Filter by category
+      @products = @products.where(category: params[:category].downcase)
+    end
+
+    case params[:sort]
+    when "price_asc"
+      @products = @products.order(price: :asc)
+    when "price_desc"
+      @products = @products.order(price: :desc)
+    when "name_asc"
+      @products = @products.order(name: :asc)
+    when "name_desc"
+      @products = @products.order(name: :desc)
     end
   end
 
@@ -67,6 +82,6 @@ class ProductsController < ApplicationController
 
   # Permits only these attributes for a product from the submitted parameters
   def product_params
-    params.require(:product).permit(:name, :description, :featured_image, :inventory_count, :price)
+    params.require(:product).permit(:name, :description, :featured_image, :inventory_count, :price, :category)
   end
 end
