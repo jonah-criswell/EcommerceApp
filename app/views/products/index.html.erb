@@ -1,31 +1,156 @@
-<div class="text-center mb-4">
-  <h1 class="display-2">Our Catalog:</h1>
-</div>
-
-<div class="d-flex align-items-center justify-content-center gap-2 mb-4">
-  <% if current_user&.admin? && authenticated? %>
-    <%= link_to "New product", new_product_path, class: "btn btn-outline-success" %>
-  <% end %>
-</div>
-
-<div id="products" class="row gx-3 gy-4 mx-auto" style="max-width: 1100px;">
-  <% @products.each do |product| %>
-    <div class="col-md-4"> <!-- 3 columns on md+ screens -->
-      <div class="card" style="width: 21rem;">
-        <% if product.featured_image.attached? %>
-          <%= image_tag product.featured_image.variant(resize_to_fill: [400, 400]).processed,
-                        class: "card-img-top img-fluid", loading: "lazy" %>
-        <% else %>
-          <div class="border img-fluid d-flex justify-content-center align-items-center"
-               style="width: 400px; height: 334px; background-color: #f0f0f0; color: #888;">
-            <span>No image available</span>
-          </div>
+<!-- Hero Section -->
+<div class="hero-section text-center py-5 mb-5" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; border-radius: 15px; margin: 20px 0;">
+  <div class="container">
+    <h1 class="display-1 mb-4 fw-bold">Our Catalog</h1>
+    <p class="lead mb-4 fs-5">Discover our curated collection of handcrafted furniture and home essentials</p>
+    <div class="d-flex justify-content-center gap-3">
+      <% if current_user&.admin? && authenticated? %>
+        <%= link_to new_product_path, class: "btn btn-light btn-lg px-4 py-2 fw-semibold" do %>
+          <i class="bi bi-plus-circle me-2"></i>Add New Product
         <% end %>
-        <div class="card-body">
-          <h5 class="card-title"><%= product.name %></h5>
-          <%= link_to "View", product, class: "btn btn-normal w-100" %>
-        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Filters and Search Section -->
+<div class="container mb-5">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <h2 class="h4 mb-3 text-muted">Showing <%= @products.count %> products</h2>
+    </div>
+    <div class="col-md-6 text-md-end">
+      <div class="d-flex gap-2 justify-content-md-end">
+        <select class="form-select form-select-sm" style="max-width: 150px;">
+          <option>Sort by</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+          <option>Name: A to Z</option>
+          <option>Name: Z to A</option>
+        </select>
+        <select class="form-select form-select-sm" style="max-width: 150px;">
+          <option>Category</option>
+          <option>Chairs</option>
+          <option>Tables</option>
+          <option>Storage</option>
+          <option>Decor</option>
+        </select>
       </div>
     </div>
-  <% end %>
+  </div>
 </div>
+
+<!-- Products Grid -->
+<div class="container">
+  <div class="row g-4">
+    <% @products.each do |product| %>
+      <div class="col-lg-4 col-md-6">
+        <div class="product-card card h-100 border-0 shadow-sm" style="transition: all 0.3s ease; border-radius: 12px; overflow: hidden;">
+          <!-- Product Image -->
+          <div class="product-image-container position-relative" style="height: 280px; overflow: hidden;">
+            <% if product.featured_image.attached? %>
+              <%= image_tag product.featured_image.variant(resize_to_fill: [400, 280]).processed,
+                            class: "w-100 h-100", style: "object-fit: cover; transition: transform 0.3s ease;", loading: "lazy" %>
+            <% else %>
+              <div class="w-100 h-100 d-flex justify-content-center align-items-center"
+                   style="background: linear-gradient(45deg, #f8f9fa 25%, transparent 25%), linear-gradient(-45deg, #f8f9fa 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f8f9fa 75%), linear-gradient(-45deg, transparent 75%, #f8f9fa 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px;">
+                <span class="text-muted">No image available</span>
+              </div>
+            <% end %>
+            
+            <!-- Price Badge -->
+            <div class="position-absolute top-0 end-0 m-3">
+              <span class="badge bg-success fs-6 px-3 py-2">$<%= number_to_currency(product.price, unit: "") %></span>
+            </div>
+            
+            <!-- Quick View Overlay -->
+            <div class="product-overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center" 
+                 style="background: rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s ease; top: 0; left: 0;">
+              <%= link_to "Quick View", product_path(product), 
+                          class: "btn btn-light btn-sm fw-semibold px-3 py-2",
+                          style: "border-radius: 25px;" %>
+            </div>
+          </div>
+          
+          <!-- Product Info -->
+          <div class="card-body d-flex flex-column p-4">
+            <h5 class="card-title fw-bold mb-2 text-dark"><%= product.name %></h5>
+            
+            <% if product.respond_to?(:description) && product.description.present? %>
+              <p class="card-text text-muted mb-3" style="font-size: 0.9rem; line-height: 1.4;">
+                <%= truncate(product.description.to_plain_text, length: 80) %>
+              </p>
+            <% end %>
+            
+            <div class="mt-auto">
+              <%= link_to "View Details", product_path(product), 
+                          class: "btn btn-outline-success w-100 fw-semibold",
+                          style: "border-radius: 8px; transition: all 0.2s ease;" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Call to Action Section -->
+<div class="w-100 py-5 featured-product-bg mt-5" style="background-color: #e9ecef; border-top: 1px solid #e5e7eb;">
+  <div class="container">
+    <div class="text-center p-5">
+      <h3 class="mb-3">Can't find what you're looking for?</h3>
+      <p class="text-muted mb-4">Contact us for custom furniture solutions tailored to your space</p>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="#" class="btn btn-success btn-lg px-4 py-2 fw-semibold">Contact Us</a>
+        <a href="#" class="btn btn-outline-secondary btn-lg px-4 py-2 fw-semibold">Request Quote</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+}
+
+.product-card:hover .product-overlay {
+  opacity: 1;
+}
+
+.product-card:hover .product-image-container img {
+  transform: scale(1.05);
+}
+
+.hero-section {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.btn {
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.form-select {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.form-select:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+/* Override main block max-width for featured products backgrounds */
+.featured-product-bg {
+  max-width: none !important;
+  margin-left: calc(-50vw + 50%) !important;
+  margin-right: calc(-50vw + 50%) !important;
+  width: 100vw !important;
+  box-sizing: border-box;
+}
+</style>
