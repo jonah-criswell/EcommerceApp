@@ -2,8 +2,7 @@
 <div class="container">
   <% if request.referer.present? && request.referer != request.url %>
     <div class="mt-4 mb-3">
-      <% back_url = request.referer.include?('/edit') ? products_path : request.referer %>
-      <%= link_to "< Back", back_url, class: "btn btn-outline-secondary" %>
+      <%= link_to "< Back", products_path, class: "btn btn-outline-secondary" %>
     </div>
   <% end %>
   <div class="row">

@@ -45,6 +45,23 @@
                 <% if product.respond_to?(:description) && product.description.present? %>
                   <p class="fs-5 text-muted mb-4"><%= truncate(product.description.to_plain_text, length: 120) %></p>
                 <% end %>
+                
+                <!-- Featured Review -->
+                <% if @featured_reviews[product.id] %>
+                  <div class="featured-review mb-4">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                      <div class="stars text-warning">
+                        <%= @featured_reviews[product.id].stars %>
+                      </div>
+                      <span class="text-muted small fw-semibold">Featured Review</span>
+                    </div>
+                    <% if @featured_reviews[product.id].comment.present? %>
+                      <p class="mb-1 text-dark fs-6"><em>"<%= truncate(@featured_reviews[product.id].comment, length: 100) %>"</em></p>
+                    <% end %>
+                    <span class="text-muted small">— <%= @featured_reviews[product.id].display_name %></span>
+                  </div>
+                <% end %>
+                
                 <%= link_to "View Details", product_path(product), class: "btn btn-outline-success btn-lg fw-semibold px-4 py-2", style: "border-radius: 25px;" %>
               </div>
             <% else %>
@@ -54,6 +71,23 @@
                 <% if product.respond_to?(:description) && product.description.present? %>
                   <p class="fs-5 text-muted mb-4"><%= truncate(product.description.to_plain_text, length: 120) %></p>
                 <% end %>
+                
+                <!-- Featured Review -->
+                <% if @featured_reviews[product.id] %>
+                  <div class="featured-review mb-4">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                      <div class="stars text-warning">
+                        <%= @featured_reviews[product.id].stars %>
+                      </div>
+                      <span class="text-muted small fw-semibold">Featured Review</span>
+                    </div>
+                    <% if @featured_reviews[product.id].comment.present? %>
+                      <p class="mb-1 text-dark fs-6"><em>"<%= truncate(@featured_reviews[product.id].comment, length: 100) %>"</em></p>
+                    <% end %>
+                    <span class="text-muted small">— <%= @featured_reviews[product.id].display_name %></span>
+                  </div>
+                <% end %>
+                
                 <%= link_to "View Details", product_path(product), class: "btn btn-outline-success btn-lg fw-semibold px-4 py-2", style: "border-radius: 25px;" %>
               </div>
               <!-- Image Section (Right for 1st and 3rd products) -->
@@ -117,5 +151,10 @@
   margin-right: calc(-50vw + 50%) !important;
   width: 100vw !important;
   box-sizing: border-box;
+}
+
+.stars {
+  font-size: 14px;
+  letter-spacing: 1px;
 }
 </style>
