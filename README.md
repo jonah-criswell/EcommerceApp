@@ -52,9 +52,9 @@ To run the app locally:
 
 ---
 
-## 🔐 Admin Access (Coming Soon)
+## 🔐 Admin Access
 
-I'm working on role-based access so only **admin users** can manage product listings. Once implemented, I'll include admin credentials here so you can explore full functionality.
+Login using admin@demo.com | password: admin223 to xplore admin tools, such as adding, editing, and deleting products.
 
 ---
 
