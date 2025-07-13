@@ -1,0 +1,28 @@
+<div class="review-item border-bottom pb-3 mb-3">
+  <div class="d-flex justify-content-between align-items-start">
+    <div class="flex-grow-1">
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <div class="stars text-warning">
+          <%= review.stars %>
+        </div>
+        <span class="text-muted small">
+          by <%= review.display_name %> • <%= time_ago_in_words(review.created_at) %> ago
+        </span>
+      </div>
+      
+      <% if review.comment.present? %>
+        <p class="mb-0 text-dark"><%= review.comment %></p>
+      <% end %>
+    </div>
+    
+    <% if authenticated? && (current_user.admin? || current_user == review.user) %>
+      <%= button_to product_review_path(@product, review), 
+                    method: :delete, 
+                    class: "delete-review-btn",
+                    data: { turbo_confirm: "Are you sure you want to delete this review?" },
+                    style: "width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; margin-left: 10px;" do %>
+        ×
+      <% end %>
+    <% end %>
+  </div>
+</div> 

@@ -1,0 +1,105 @@
+<div class="container mt-5 pt-5">
+  <div class="row">
+    <div class="col-12">
+      <!-- Reviews Header -->
+      <div class="text-center mb-4">
+        <h2 class="display-6 fw-bold mb-3">Customer Reviews</h2>
+        <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
+          <div class="stars text-warning fs-4">
+            <%= product.average_stars %>
+          </div>
+          <span class="text-muted fs-5">
+            <%= product.average_rating %> out of 5 • <%= product.review_count %> reviews
+          </span>
+        </div>
+        
+        <div class="d-flex justify-content-center">
+          <% if authenticated? %>
+            <% unless product.reviews.exists?(user: current_user) %>
+              <button id="write-review-btn" class="btn btn-success" onclick="showReviewForm()">
+                <i class="bi bi-star me-2"></i>Write a Review
+              </button>
+            <% end %>
+          <% else %>
+            <%= link_to "Sign in to review", new_session_path, class: "btn btn-outline-success" %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Review Form (hidden by default) -->
+      <% if authenticated? %>
+        <div id="review-form" class="card border-0 shadow-sm p-4 mb-4" style="display: none; border-radius: 12px;">
+          <h4 class="h5 fw-bold mb-3">Write Your Review</h4>
+          <%= render "reviews/form", product: product %>
+        </div>
+      <% end %>
+
+      <!-- Reviews List -->
+      <div class="reviews-list">
+        <% if product.reviews.any? %>
+          <% reviews.each do |review| %>
+            <%= render "reviews/review", review: review %>
+          <% end %>
+          
+          <!-- See More / Pagination -->
+          <div class="text-center mt-4">
+            <% unless show_all_reviews %>
+              <% if total_reviews > 3 %>
+                <%= link_to "See More Reviews (#{total_reviews - 3} more)", 
+                            product_path(product, show_all_reviews: true), 
+                            class: "btn btn-outline-success review-nav-link",
+                            data: { turbo_frame: "reviews" } %>
+              <% end %>
+            <% else %>
+              <!-- Pagination -->
+              <% if total_pages > 1 %>
+                <nav aria-label="Reviews pagination">
+                  <ul class="pagination justify-content-center">
+                    <% if reviews_page > 1 %>
+                      <li class="page-item">
+                        <%= link_to "Previous", 
+                                    product_path(product, show_all_reviews: true, reviews_page: reviews_page - 1), 
+                                    class: "page-link review-nav-link",
+                                    data: { turbo_frame: "reviews" } %>
+                      </li>
+                    <% end %>
+                    
+                    <% (1..total_pages).each do |page| %>
+                      <li class="page-item <%= 'active' if page == reviews_page %>">
+                        <%= link_to page, 
+                                    product_path(product, show_all_reviews: true, reviews_page: page), 
+                                    class: "page-link review-nav-link",
+                                    data: { turbo_frame: "reviews" } %>
+                      </li>
+                    <% end %>
+                    
+                    <% if reviews_page < total_pages %>
+                      <li class="page-item">
+                        <%= link_to "Next", 
+                                    product_path(product, show_all_reviews: true, reviews_page: reviews_page + 1), 
+                                    class: "page-link review-nav-link",
+                                    data: { turbo_frame: "reviews" } %>
+                      </li>
+                    <% end %>
+                  </ul>
+                </nav>
+              <% end %>
+              
+              <!-- Show Less -->
+              <%= link_to "Show Less", 
+                          product_path(product), 
+                          class: "btn btn-outline-secondary review-nav-link",
+                          data: { turbo_frame: "reviews" } %>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="text-center py-5">
+            <i class="bi bi-chat-dots display-4 text-muted mb-3"></i>
+            <h4 class="h5 text-muted mb-2">No reviews yet</h4>
+            <p class="text-muted">Be the first to review this product!</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div> 
