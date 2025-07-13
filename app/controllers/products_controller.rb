@@ -34,6 +34,31 @@ class ProductsController < ApplicationController
   # Displays a single product (retrieved by `set_product`)
   def show
     @user = current_user
+    @reviews_page = params[:reviews_page]&.to_i || 1
+    @reviews_per_page = params[:show_all_reviews] == 'true' ? 10 : 3
+    @show_all_reviews = params[:show_all_reviews] == 'true'
+    
+    @reviews = @product.reviews.recent
+    @total_reviews = @reviews.count
+    
+    if @show_all_reviews
+      @reviews = @reviews.offset((@reviews_page - 1) * @reviews_per_page).limit(@reviews_per_page)
+      @total_pages = (@total_reviews.to_f / @reviews_per_page).ceil
+    else
+      @reviews = @reviews.limit(@reviews_per_page)
+    end
+    
+    # If this is a Turbo Frame request, only render the reviews section
+    if turbo_frame_request?
+      render partial: "reviews_section", locals: { 
+        product: @product, 
+        reviews: @reviews, 
+        show_all_reviews: @show_all_reviews,
+        reviews_page: @reviews_page,
+        total_reviews: @total_reviews,
+        total_pages: @total_pages
+      }
+    end
   end
 
   # Initializes a new product instance for the form

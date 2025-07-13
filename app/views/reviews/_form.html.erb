@@ -1,0 +1,99 @@
+<%= form_with model: [product, Review.new], local: true, class: "review-form" do |form| %>
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Rating</label>
+    <div class="rating-stars mb-2" id="rating-container">
+      <% 1.upto(5) do |star| %>
+        <%= form.radio_button :rating, star, class: "rating-input", id: "rating_#{star}" %>
+        <label for="rating_<%= star %>" class="star-label" data-rating="<%= star %>">★</label>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :comment, "Review (optional)", class: "form-label fw-semibold" %>
+    <%= form.text_area :comment, class: "form-control", rows: 3, placeholder: "Share your thoughts about this product..." %>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= form.submit "Submit Review", class: "btn btn-success" %>
+    <button type="button" class="btn btn-outline-secondary" onclick="cancelReviewForm()">Cancel</button>
+  </div>
+<% end %>
+
+<style>
+.rating-stars {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+}
+
+.rating-input {
+  display: none;
+}
+
+.star-label {
+  font-size: 24px;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.star-label.active {
+  color: #ffc107;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const ratingContainer = document.getElementById('rating-container');
+  const stars = ratingContainer.querySelectorAll('.star-label');
+  const inputs = ratingContainer.querySelectorAll('.rating-input');
+  
+  // Handle hover effects
+  stars.forEach((star, index) => {
+    star.addEventListener('mouseenter', function() {
+      // Reset all stars
+      stars.forEach(s => s.classList.remove('active'));
+      // Activate stars from left to right (including current star)
+      for (let i = 0; i <= index; i++) {
+        stars[i].classList.add('active');
+      }
+    });
+  });
+  
+  // Handle mouse leave - show selected rating
+  ratingContainer.addEventListener('mouseleave', function() {
+    const checkedInput = ratingContainer.querySelector('.rating-input:checked');
+    if (checkedInput) {
+      const rating = parseInt(checkedInput.value);
+      stars.forEach((star, index) => {
+        if (index < rating) {
+          star.classList.add('active');
+        } else {
+          star.classList.remove('active');
+        }
+      });
+    } else {
+      stars.forEach(star => star.classList.remove('active'));
+    }
+  });
+  
+  // Handle click to select rating
+  stars.forEach((star, index) => {
+    star.addEventListener('click', function() {
+      const rating = index + 1;
+      const input = document.getElementById(`rating_${rating}`);
+      input.checked = true;
+      
+      // Update star display
+      stars.forEach((s, i) => {
+        if (i < rating) {
+          s.classList.add('active');
+        } else {
+          s.classList.remove('active');
+        }
+      });
+    });
+  });
+});
+</script> 

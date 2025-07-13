@@ -6,10 +6,45 @@
   <% end %>
 <% else %>
   <p style="color: #ff0000;">Out of stock</p>
-  <p>Email me when available:</p>
-
-  <%= form_with model: [product, Subscriber.new] do |form| %>
-    <%= form.email_field :email, placeholder: "you@example.com", required: true %>
-    <%= form.submit "Submit" %>
+  
+  <!-- 
+  <% if authenticated? %>
+    <% subscriber = Subscriber.find_by(product: product, user: current_user) %>
+    <% if subscriber %>
+      <button onclick="submitForm('delete', '<%= product_subscriber_path(product, subscriber) %>')" class="btn btn-outline-secondary btn-sm">
+        Turn off email notifications
+      </button>
+    <% else %>
+      <button onclick="submitForm('post', '<%= product_subscribers_path(product) %>')" class="btn btn-outline-success btn-sm">
+        Email me when available
+      </button>
+    <% end %>
+  <% else %>
+    <%= link_to "Sign in to get notified", new_session_path, class: "btn btn-outline-success btn-sm" %>
   <% end %>
+  -->
 <% end %>
+
+<script>
+function submitForm(method, url) {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = url;
+  form.style.display = 'none';
+  
+  const methodInput = document.createElement('input');
+  methodInput.type = 'hidden';
+  methodInput.name = '_method';
+  methodInput.value = method;
+  form.appendChild(methodInput);
+  
+  const tokenInput = document.createElement('input');
+  tokenInput.type = 'hidden';
+  tokenInput.name = 'authenticity_token';
+  tokenInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  form.appendChild(tokenInput);
+  
+  document.body.appendChild(form);
+  form.submit();
+}
+</script>

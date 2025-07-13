@@ -1,5 +1,11 @@
 <!-- Product Detail Section -->
 <div class="container">
+  <% if request.referer.present? && request.referer != request.url %>
+    <div class="mt-4 mb-3">
+      <% back_url = request.referer.include?('/edit') ? products_path : request.referer %>
+      <%= link_to "< Back", back_url, class: "btn btn-outline-secondary" %>
+    </div>
+  <% end %>
   <div class="row">
     <!-- Product Images -->
     <div class="col-lg-6 mb-4">
@@ -21,39 +27,41 @@
       </div>
       
       <!-- Add to Cart Section -->
-      <div class="card border-0 shadow-sm p-4 mt-4" style="border-radius: 12px;">
-        <h4 class="h6 fw-bold mb-3">Add to Cart</h4>
-        
-        <%= form_with url: cart_items_path, method: :post, class: "d-flex gap-3 align-items-end" do |f| %>
-          <%= hidden_field_tag :product_id, @product.id %>
-          <% if session[:cart].nil? %>
-            <% session[:cart] = [] %>
-          <% end %>
-          <% cart_item = session[:cart]&.find { |item| item["product_id"] == @product.id } %>
-          <% current_quantity = cart_item ? cart_item["quantity"] : 0 %>
-
-          <% if @product.inventory_count - current_quantity == 0 %>
-            <% unless @product.inventory_count == 0 %>
-              <div class="alert alert-warning mb-0">
-                <i class="bi bi-exclamation-triangle me-2"></i>
-                No more of this product can be added to your cart due to limited inventory.
-              </div>
+      <% unless @product.inventory_count == 0 %>
+        <div class="card border-0 shadow-sm p-4 mt-4" style="border-radius: 12px;">
+          <h4 class="h6 fw-bold mb-3">Add to Cart</h4>
+          
+          <%= form_with url: cart_items_path, method: :post, class: "d-flex gap-3 align-items-end" do |f| %>
+            <%= hidden_field_tag :product_id, @product.id %>
+            <% if session[:cart].nil? %>
+              <% session[:cart] = [] %>
             <% end %>
-          <% else %>
-            <div class="flex-grow-1">
-              <label for="quantity" class="form-label fw-semibold">Quantity</label>
-              <%= number_field_tag :quantity, 1, 
-                                  min: 1, 
-                                  max: @product.inventory_count - current_quantity,
-                                  class: "form-control form-control-lg",
-                                  style: "max-width: 120px;" %>
-            </div>
-            <%= submit_tag "Add to Cart", 
-                          class: "btn btn-success btn-lg px-4 py-3 fw-semibold",
-                          style: "border-radius: 8px;" %>
+            <% cart_item = session[:cart]&.find { |item| item["product_id"] == @product.id } %>
+            <% current_quantity = cart_item ? cart_item["quantity"] : 0 %>
+
+            <% if @product.inventory_count - current_quantity == 0 %>
+              <% unless @product.inventory_count == 0 %>
+                <div class="alert alert-warning mb-0">
+                  <i class="bi bi-exclamation-triangle me-2"></i>
+                  No more of this product can be added to your cart due to limited inventory.
+                </div>
+              <% end %>
+            <% else %>
+              <div class="flex-grow-1">
+                <label for="quantity" class="form-label fw-semibold">Quantity</label>
+                <%= number_field_tag :quantity, 1, 
+                                    min: 1, 
+                                    max: @product.inventory_count - current_quantity,
+                                    class: "form-control form-control-lg",
+                                    style: "max-width: 120px;" %>
+              </div>
+              <%= submit_tag "Add to Cart", 
+                            class: "btn btn-success btn-lg px-4 py-3 fw-semibold",
+                            style: "border-radius: 8px;" %>
+            <% end %>
           <% end %>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     </div>
 
     <!-- Product Information -->
@@ -79,7 +87,7 @@
 
         <!-- Admin Actions -->
         <% if current_user&.admin? %>
-          <div class="d-flex gap-2 mb-4">
+          <div class="d-flex gap-2 mb-4 admin-actions">
             <%= link_to edit_product_path(@product), class: "btn btn-outline-primary btn-lg px-4 py-2 fw-semibold" do %>
               <i class="bi bi-pencil me-2"></i>Edit Product
             <% end %>
@@ -95,6 +103,64 @@
     </div>
   </div>
 </div>
+
+<!-- Reviews Section -->
+<%= turbo_frame_tag "reviews" do %>
+  <div class="container mt-5 pt-5">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <!-- Reviews Header -->
+        <div class="text-center mb-4">
+          <h2 class="display-6 fw-bold mb-3">Customer Reviews</h2>
+          <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
+            <div class="stars text-warning fs-4">
+              <%= @product.average_stars %>
+            </div>
+            <span class="text-muted fs-5">
+              <%= @product.average_rating %> out of 5 • <%= @product.review_count %> reviews
+            </span>
+          </div>
+          
+          <div class="d-flex justify-content-center">
+            <% if authenticated? %>
+              <% unless @product.reviews.exists?(user: current_user) %>
+                <button id="write-review-btn" class="btn btn-success" onclick="showReviewForm()">
+                  <i class="bi bi-star me-2"></i>Write a Review
+                </button>
+              <% end %>
+            <% else %>
+              <%= link_to "Sign in to review", new_session_path, class: "btn btn-outline-success" %>
+            <% end %>
+          </div>
+                  </div>
+        </div>
+
+        <!-- Review Form (hidden by default) -->
+        <% if authenticated? %>
+          <div id="review-form" class="card border-0 shadow-sm p-4 mb-4" style="display: none; border-radius: 12px;">
+            <h4 class="h5 fw-bold mb-3">Write Your Review</h4>
+            <%= render "reviews/form", product: @product %>
+          </div>
+        <% end %>
+
+        <!-- Reviews List -->
+        <div class="reviews-list">
+          <% if @product.reviews.any? %>
+            <% @product.reviews.recent.each do |review| %>
+              <%= render "reviews/review", review: review %>
+            <% end %>
+          <% else %>
+            <div class="text-center py-5">
+              <i class="bi bi-chat-dots display-4 text-muted mb-3"></i>
+              <h4 class="h5 text-muted mb-2">No reviews yet</h4>
+              <p class="text-muted">Be the first to review this product!</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
 
 <!-- Related Products Section -->
 <div class="container mt-5 pt-5">
@@ -194,4 +260,56 @@
   border-color: #28a745;
   box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
+
+/* Review delete button styling */
+.delete-review-btn {
+  opacity: 1;
+  transition: all 0.2s ease;
+  background-color: transparent;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+}
+
+.delete-review-btn:hover {
+  background-color: #dc3545;
+  color: white;
+  transform: scale(1.1);
+  border-color: #dc3545;
+}
+
+.review-item {
+  transition: background-color 0.2s ease;
+}
+
+.review-item:hover {
+  background-color: rgba(0,0,0,0.02);
+  border-radius: 8px;
+  padding: 8px;
+  margin: -8px;
+}
+
+/* Ensure admin actions are always visible */
+.admin-actions {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.admin-actions .btn {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
 </style>
+
+<script>
+function showReviewForm() {
+  document.getElementById('review-form').style.display = 'block';
+  document.getElementById('write-review-btn').style.display = 'none';
+}
+
+function cancelReviewForm() {
+  document.getElementById('review-form').style.display = 'none';
+  document.getElementById('write-review-btn').style.display = 'block';
+}
+</script>

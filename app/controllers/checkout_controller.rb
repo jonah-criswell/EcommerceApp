@@ -11,7 +11,7 @@ class CheckoutController < ApplicationController
           product_data: {
             name: product.name,
           },
-          unit_amount: (product.price * 100).to_i, # Stripe expects cents
+          unit_amount: (product.price * 100).to_i, 
           tax_behavior: 'exclusive',
         },
         quantity: item["quantity"],
@@ -44,6 +44,7 @@ class CheckoutController < ApplicationController
       payment_intent_data: {
         description: "eCommerce Checkout",
       },
+
       success_url: checkout_success_url + "?success=true",
       cancel_url: cart_url + "?cancel=true"
     )
@@ -51,7 +52,17 @@ class CheckoutController < ApplicationController
   end
   
   def success
-    session[:cart] = []  # Clear the cart after successful checkout
+    # Reduce inventory for all items in the cart
+    cart = session[:cart] || []
+    cart.each do |item|
+      product = Product.find_by(id: item["product_id"])
+      if product
+        new_inventory = product.inventory_count - item["quantity"]
+        product.update(inventory_count: [new_inventory, 0].max)
+      end
+    end
+    
+    session[:cart] = [] 
     flash[:notice] = "Thank you for your purchase!"
     redirect_to root_path
   end
