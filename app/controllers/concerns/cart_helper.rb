@@ -11,3 +11,4 @@ module CartHelper
      end.compact
      cart_items.sum { |item| item[:product].price * item[:quantity] }
    end
+end
