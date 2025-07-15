@@ -82,4 +82,17 @@ This project is a personal initiative to deepen my understanding of Ruby on Rail
 
 ---
 
+## Deployment (AWS EC2 with Kamal)
+
+1. Build image:
+   docker build -t jonahc/myshop .
+
+2. Push to Docker Hub:
+   docker push jonahc/myshop
+
+3. SSH into EC2:
+   ssh -i my-key.pem ubuntu@<ec2-ip>
+
+4. Deploy:
+   kamal deploy
 
