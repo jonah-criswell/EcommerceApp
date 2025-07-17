@@ -34,4 +34,3 @@
 /config/master.key
 .kamal/secrets.env
 .kamal/secrets
-config/database.yml
