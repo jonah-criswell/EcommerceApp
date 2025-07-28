@@ -36,3 +36,9 @@ production:
 
   cache:
     <<: *primary
+
+  cable:
+    <<: *primary
+
+  queue:
+    <<: *primary
