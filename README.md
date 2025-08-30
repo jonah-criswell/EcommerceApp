@@ -54,27 +54,12 @@ To run the app locally:
 
 ## 🔐 Admin Access
 
-Login using admin@demo.com | password: admin223 to xplore admin tools, such as adding, editing, and deleting products.
+Login using admin@demo.com | password: admin223 to explore admin tools, such as adding, editing, and deleting products.
 
 ---
 
 ## 📸 Screenshots (Coming Soon)
 
-Stay tuned! UI improvements and screenshots will be added after styling is complete.
-
----
-
-## 🎯 Roadmap / TODOs
-
-- [ ] Style the app using **Bootstrap** for clean, responsive design
-- [ ] Restrict product management to **admin users** only
-- [ ] Add a contextual homepage with branding and feature highlights
-- [ ] Deploy to production (likely with **Render** or **Heroku**)
-- [ ] Explore AI-powered features:
-  - Generate product descriptions automatically
-  - Recommend products based on user history
-
----
 
 ## 📚 Motivation
 
